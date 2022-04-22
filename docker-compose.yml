@@ -1,0 +1,30 @@
+version: "3.9"
+# 注意: 此配置仅用于开发环境,部署正式环境时要替换里面的内容
+
+services:
+  db:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_ROOT_PASSWORD: passwd1234
+    networks:
+      - db
+    ports:
+      - target: 3306
+        published: 3306
+        mode: host
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - target: 8080
+        published: 8080
+        mode: host
+    networks:
+      - db
+    depends_on:
+      - db
+
+networks:
+  db:
