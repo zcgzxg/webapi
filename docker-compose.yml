@@ -13,6 +13,8 @@ services:
       - target: 3306
         published: 3306
         mode: host
+    volumes:
+      - D:/.docker-volume/mysql:/var/lib/mysql
 
   adminer:
     image: adminer

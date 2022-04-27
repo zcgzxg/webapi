@@ -22,7 +22,7 @@ public class TestController : ControllerBase
         try
         {
             await conn.OpenAsync();
-            var sql = @"select p.*,p.categoryid,c.categoryname from product p inner join category c on p.categoryid = c.categoryid where productid < 3";
+            var sql = @"select p.*,p.categoryid,c.categoryname from products p inner join categories c on p.categoryid = c.categoryid where productid < 3";
             var products = await conn.QueryAsync<Product, Category, Product>(sql, (p, c) =>
             {
                 p.Category = c;
