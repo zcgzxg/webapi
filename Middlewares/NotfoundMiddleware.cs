@@ -1,3 +1,5 @@
+
+#pragma warning disable 1591
 namespace webapi.Middlewares
 {
     public class NotfoundMiddleware
