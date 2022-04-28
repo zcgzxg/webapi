@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using MySqlConnector;
+using DapperExtensions;
 using Dapper;
 using webapi.Models;
 using webapi.Base;
@@ -17,19 +17,19 @@ public class TestController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet("")]
-    public async Task<IEnumerable<Category>> Get([FromServices] AppDB db)
+    [HttpGet]
+    public async Task<IEnumerable<Category>> GetCategories([FromServices] AppDB db)
     {
         try
         {
             var conn = db.Conn;
             await conn.OpenAsync();
             var sql = @"
-SELECT c.*,
-    p.productid,
-    p.*
-FROM categories c
-    INNER JOIN products p ON p.categoryid = c.categoryid";
+                SELECT c.*,
+                    p.productid,
+                    p.*
+                FROM categories c
+                    INNER JOIN products p ON p.categoryid = c.categoryid";
             var categories = await conn.QueryAsync<Category, Product, Category>(sql, (c, p) =>
             {
                 c.Products?.Add(p);
@@ -47,6 +47,20 @@ FROM categories c
         {
             Console.WriteLine(e);
             return Enumerable.Empty<Category>();
+        }
+    }
+    [HttpPost]
+    public async Task<Category?> EditCategory(Category cate, [FromServices] AppDB db)
+    {
+        try
+        {
+            var conn = db.Conn;
+            cate = await conn.InsertAsync(cate);
+            return cate;
+        }
+        catch (Exception)
+        {
+            return null;
         }
     }
 }
