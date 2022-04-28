@@ -5,5 +5,6 @@ namespace webapi.Models
 
         public UInt32 CategoryId { get; set; }
         public string CategoryName { get; set; } = "";
+        public List<Product> Products { get; set; } = new List<Product>();
     }
 }
