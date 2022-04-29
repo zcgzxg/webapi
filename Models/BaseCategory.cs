@@ -1,12 +1,11 @@
 using System.ComponentModel.DataAnnotations;
-using DapperExtensions;
 
 namespace webapi.Models
 {
     /// <summary>
-    /// Category Model
+    /// BaseCategory Model
     /// </summary>
-    public class Category
+    public class BaseCategory
     {
         /// <summary>
         /// 分类ID
@@ -19,9 +18,5 @@ namespace webapi.Models
         [Required]
         [StringLength(48, MinimumLength = 1)]
         public string CategoryName { get; set; } = "";
-        /// <summary>
-        /// 分类下的商品
-        /// </summary>
-        public List<Product> Products { get; set; } = new List<Product>();
     }
 }

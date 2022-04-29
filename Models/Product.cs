@@ -27,6 +27,6 @@ namespace webapi.Models
         /// 所属分类
         /// </summary>
         [JsonIgnore]
-        public Category? Category { get; set; }
+        public CategoryORM? Category { get; set; }
     }
 }

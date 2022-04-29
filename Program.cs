@@ -1,13 +1,19 @@
 using webapi.Middlewares;
 using webapi.Base;
 using Microsoft.OpenApi.Models;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
+    });
 
 builder.Services.AddTransient<AppDB>(_ =>
 {
@@ -18,6 +24,7 @@ builder.Services.AddTransient<AppDB>(_ =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
+    options.SwaggerGeneratorOptions = new Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorOptions() { DescribeAllParametersInCamelCase = false };
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
@@ -35,6 +42,9 @@ builder.Services.AddSwaggerGen(options =>
             Url = new Uri("https://example.com/license")
         }
     });
+    // using System.Reflection;
+    var xmlFilename = $"{builder.Environment.ApplicationName}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
 var app = builder.Build();

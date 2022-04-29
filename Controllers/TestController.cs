@@ -27,7 +27,7 @@ public class TestController : ControllerBase
     /// 获取分类列表及其下的商品
     /// </summary>
     [HttpGet]
-    public async Task<IEnumerable<Category>> GetCategories([FromServices] AppDB db)
+    public async Task<CommonResponse<IEnumerable<CategoryORM>>> GetCategories([FromServices] AppDB db)
     {
         try
         {
@@ -39,41 +39,41 @@ public class TestController : ControllerBase
                     p.*
                 FROM categories c
                     INNER JOIN products p ON p.categoryid = c.categoryid";
-            var categories = await conn.QueryAsync<Category, Product, Category>(sql, (c, p) =>
+            var categories = await conn.QueryAsync<CategoryORM, Product, CategoryORM>(sql, (c, p) =>
             {
                 c.Products?.Add(p);
                 return c;
             }, splitOn: "ProductId");
 
-            return categories.GroupBy(c => c.CategoryId).Select(g =>
+            return new CommonResponse<IEnumerable<CategoryORM>>(categories.GroupBy(c => c.CategoryId).Select(g =>
             {
                 var c = g.First();
                 c.Products = g.Select(c => c.Products.Single()).ToList();
                 return c;
-            });
+            }));
         }
         catch (Exception e)
         {
             _logger.LogTrace(exception: e, message: nameof(TestController));
-            return Enumerable.Empty<Category>();
+            return new CommonResponse<IEnumerable<CategoryORM>>(Enumerable.Empty<CategoryORM>(), ErrorCodes.Error, e.Message);
         }
     }
     /// <summary>
     /// 编辑分类
     /// </summary>
     [HttpPost]
-    public async Task<Category?> EditCategory([FromBody] Category cate, [FromServices] AppDB db)
+    public async Task<CommonResponse<CategoryMVC>> EditCategory([FromBody] CategoryMVC cate, [FromServices] AppDB db)
     {
         try
         {
             var conn = db.Conn;
             cate = await conn.InsertAsync(cate);
-            return cate;
+            return new CommonResponse<CategoryMVC>(cate);
         }
         catch (Exception e)
         {
             _logger.LogTrace(exception: e, message: nameof(TestController) + " " + e.Message);
-            return null;
+            return new CommonResponse<CategoryMVC>(null, ErrorCodes.Error, e.Message);
         }
     }
 }
