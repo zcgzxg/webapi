@@ -3,7 +3,7 @@ namespace webapi.Models
     /// <summary>
     /// Category Model
     /// </summary>
-    public class CategoryMVC : BaseCategory
+    public class EditCategoryModel : BaseCategory
     {
     }
 }

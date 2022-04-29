@@ -24,7 +24,7 @@ namespace webapi.Base
         /// <summary>
         /// 初始化CommonActionResultData
         /// </summary>
-        public CommonResponse(TData data, ErrorCodes type = ErrorCodes.Success, string description = "")
+        public CommonResponse(TData? data, ErrorCodes type = ErrorCodes.Success, string description = "")
         {
             Description = description;
             Data = data;

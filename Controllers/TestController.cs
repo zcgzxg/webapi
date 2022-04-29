@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using DapperExtensions;
+using Dapper.Contrib.Extensions;
 using Dapper;
 using webapi.Models;
 using webapi.Base;
@@ -62,18 +62,19 @@ public class TestController : ControllerBase
     /// 编辑分类
     /// </summary>
     [HttpPost]
-    public async Task<CommonResponse<CategoryMVC>> EditCategory([FromBody] CategoryMVC cate, [FromServices] AppDB db)
+    public async Task<CommonResponse<EditCategoryModel>> EditCategory([FromBody] EditCategoryModel cate, [FromServices] AppDB db)
     {
         try
         {
             var conn = db.Conn;
-            cate = await conn.InsertAsync(cate);
-            return new CommonResponse<CategoryMVC>(cate);
+            var id = await conn.InsertAsync<EditCategoryModel>(cate);
+            cate.CategoryId = (UInt32)id;
+            return new CommonResponse<EditCategoryModel>(cate);
         }
         catch (Exception e)
         {
             _logger.LogTrace(exception: e, message: nameof(TestController) + " " + e.Message);
-            return new CommonResponse<CategoryMVC>(null, ErrorCodes.Error, e.Message);
+            return new CommonResponse<EditCategoryModel>(null, ErrorCodes.Error, e.Message);
         }
     }
 }
