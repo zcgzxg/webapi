@@ -1,3 +1,5 @@
+using System.Data.Common;
+
 namespace webapi.Base
 {
     /// <summary>
@@ -8,21 +10,14 @@ namespace webapi.Base
         /// <summary>
         /// 数据库连接
         /// </summary>
-        public MySqlConnector.MySqlConnection Conn { get; }
-
-        static AppDB()
-        {
-            var factory = Microsoft.Extensions.Logging.LoggerFactory.Create(
-    builder => builder.AddFilter("MySqlConnector.SingleCommandPayloadCreator", LogLevel.Trace).AddConsole());
-            MySqlConnector.Logging.MySqlConnectorLogManager.Provider = new MySqlConnector.Logging.MicrosoftExtensionsLoggingLoggerProvider(factory);
-        }
+        public DbConnection Conn { get; }
 
         /// <summary>
         /// AppDB
         /// </summary>
         public AppDB(string connStr)
         {
-            Conn = new MySqlConnector.MySqlConnection(connStr);
+            Conn = new MySql.Data.MySqlClient.MySqlConnection(connStr);
         }
 
         /// <summary>
@@ -31,6 +26,27 @@ namespace webapi.Base
         public void Dispose()
         {
             Conn.Dispose();
+        }
+    }
+
+    /// <summary>
+    /// 注册AppDB 
+    /// </summary>
+    public static class AppDBExtensions
+    {
+        /// <summary>
+        /// 注册AppDB
+        /// </summary>
+        public static WebApplicationBuilder UseAppDB(this WebApplicationBuilder builder, string connStr)
+        {
+            if (builder.Environment.IsDevelopment())
+            {
+                MySql.Data.MySqlClient.MySqlTrace.Switch.Level = System.Diagnostics.SourceLevels.All;
+                MySql.Data.MySqlClient.MySqlTrace.Listeners.Add(new System.Diagnostics.ConsoleTraceListener());
+            }
+
+            builder.Services.AddTransient<AppDB>((sp) => new AppDB(connStr));
+            return builder;
         }
     }
 }

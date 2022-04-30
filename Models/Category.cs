@@ -4,10 +4,10 @@ using Dapper.Contrib.Extensions;
 namespace webapi.Models
 {
     /// <summary>
-    /// BaseCategory Model
+    /// Category Model
     /// </summary>
     [Table("categories")]
-    public class BaseCategory
+    public class Category
     {
         /// <summary>
         /// 分类ID

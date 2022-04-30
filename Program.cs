@@ -1,7 +1,5 @@
-using webapi.Middlewares;
 using webapi.Base;
 using Microsoft.OpenApi.Models;
-using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,10 +13,7 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
     });
 
-builder.Services.AddTransient<AppDB>(_ =>
-{
-    return new AppDB(builder.Configuration["ConnectionStrings:Default"]);
-});
+builder.UseAppDB(builder.Configuration["ConnectionStrings:Default"]);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -60,7 +55,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseNotfoundMiddleware();
 
 app.Run();

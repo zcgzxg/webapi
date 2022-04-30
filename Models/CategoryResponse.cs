@@ -1,9 +1,9 @@
 namespace webapi.Models
 {
     /// <summary>
-    /// Category Model
+    /// CategoryResponse Model
     /// </summary>
-    public class CategoryORM : BaseCategory
+    public class CategoryResponse : Category
     {
         /// <summary>
         /// 分类下的商品
