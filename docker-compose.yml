@@ -2,6 +2,16 @@ version: "3.9"
 # 注意: 此配置仅用于开发环境,部署正式环境时要替换里面的内容
 
 services:
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - C:/.docker-volume/redis:/data
+    restart: always
+    command: redis-server --save 120 1 --maxmemory 200m
+    networks:
+      - db
   db:
     image: mysql
     environment:
@@ -14,7 +24,7 @@ services:
         published: 3306
         mode: host
     volumes:
-      - D:/.docker-volume/mysql:/var/lib/mysql
+      - C:/.docker-volume/mysql:/var/lib/mysql
 
   adminer:
     image: adminer
