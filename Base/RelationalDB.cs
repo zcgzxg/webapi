@@ -5,7 +5,7 @@ namespace webapi.Base
     /// <summary>
     /// AppDB Class
     /// </summary>
-    public class AppDB : IDisposable
+    class RelationalDB : IRelationalDB
     {
         /// <summary>
         /// 数据库连接
@@ -15,7 +15,7 @@ namespace webapi.Base
         /// <summary>
         /// AppDB
         /// </summary>
-        public AppDB(string connStr)
+        public RelationalDB(string connStr)
         {
             Conn = new MySql.Data.MySqlClient.MySqlConnection(connStr);
         }
@@ -30,9 +30,9 @@ namespace webapi.Base
     }
 
     /// <summary>
-    /// 注册AppDB 
+    /// 注册IRelationalDB 
     /// </summary>
-    public static class AppDBExtensions
+    public static class RelationalDBExtensions
     {
         /// <summary>
         /// 注册AppDB
@@ -45,7 +45,7 @@ namespace webapi.Base
                 MySql.Data.MySqlClient.MySqlTrace.Listeners.Add(new System.Diagnostics.ConsoleTraceListener());
             }
 
-            builder.Services.AddTransient<AppDB>((sp) => new AppDB(connStr));
+            builder.Services.AddTransient<IRelationalDB>((sp) => new RelationalDB(connStr));
             return builder;
         }
     }

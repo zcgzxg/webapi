@@ -27,7 +27,7 @@ public class CategoryController : ControllerBase
     /// 获取分类列表及其下的商品
     /// </summary>
     [HttpGet]
-    public async Task<CommonResponse<IEnumerable<CategoryResponse>>> GetCategories([FromServices] AppDB db)
+    public async Task<CommonResponse<IEnumerable<CategoryResponse>>> GetCategories([FromServices] IRelationalDB db)
     {
         try
         {
@@ -69,7 +69,7 @@ public class CategoryController : ControllerBase
     /// 编辑分类
     /// </summary>
     [HttpPost]
-    public async Task<CommonResponse<Category>> EditCategory([FromBody] Category cate, [FromServices] AppDB db)
+    public async Task<CommonResponse<Category>> EditCategory([FromBody] Category cate, [FromServices] IRelationalDB db)
     {
         try
         {
@@ -98,7 +98,7 @@ public class CategoryController : ControllerBase
     /// 删除分类
     /// </summary>
     [HttpDelete]
-    public async Task<CommonResponse<bool>> DeleteCategory([FromQuery] uint categoryId, [FromServices] AppDB db)
+    public async Task<CommonResponse<bool>> DeleteCategory([FromQuery] uint categoryId, [FromServices] IRelationalDB db)
     {
         try
         {

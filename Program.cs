@@ -13,7 +13,8 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
     });
 
-builder.UseAppDB(builder.Configuration["ConnectionStrings:Default"]);
+builder.UseAppDB(builder.Configuration["ConnectionStrings:Mysql"]);
+builder.Services.AddRedis(builder.Configuration["ConnectionStrings:Redis"]);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

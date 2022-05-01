@@ -8,10 +8,9 @@ services:
       - "6379:6379"
     volumes:
       - C:/.docker-volume/redis:/data
-    restart: always
-    command: redis-server --save 120 1 --maxmemory 200m
+    command: redis-server --save 120 1 --maxmemory 200m --requirepass passwd1234 --bind 0.0.0.0
     networks:
-      - db
+      - redis
   db:
     image: mysql
     environment:
@@ -26,6 +25,7 @@ services:
     volumes:
       - C:/.docker-volume/mysql:/var/lib/mysql
 
+  # 管理mysql数据库,访问http://localhost:8080 host=db user=root password=passwd1234
   adminer:
     image: adminer
     restart: always
@@ -37,6 +37,24 @@ services:
       - db
     depends_on:
       - db
+  
+  # 管理redis数据库,访问http://localhost:8081
+  redis-commander:
+    image: rediscommander/redis-commander
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: passwd1234
+      PORT: 8081
+    ports:
+      - target: 8081
+        published: 8081
+        mode: host
+    networks:
+      - redis
+    depends_on:
+      - redis
 
 networks:
   db:
+  redis:
