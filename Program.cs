@@ -1,5 +1,6 @@
 using webapi.Base;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,20 @@ builder.Services.AddControllers()
 
 builder.UseAppDB(builder.Configuration["ConnectionStrings:Mysql"]);
 builder.Services.AddRedis(builder.Configuration["ConnectionStrings:Redis"]);
+
+builder.Services.AddResponseCompression(option =>
+{
+    option.Providers.Add<GzipCompressionProvider>();
+    option.Providers.Add<BrotliCompressionProvider>();
+});
+builder.Services.Configure<GzipCompressionProviderOptions>(options =>
+{
+    options.Level = System.IO.Compression.CompressionLevel.Fastest;
+});
+builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
+{
+    options.Level = System.IO.Compression.CompressionLevel.Fastest;
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -54,7 +69,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.UseResponseCompression();
 app.MapControllers();
 
 app.Run();
