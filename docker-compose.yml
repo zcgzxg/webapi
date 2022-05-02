@@ -1,5 +1,5 @@
 version: "3.9"
-# 注意: 此配置仅用于开发环境,部署正式环境时要替换里面的内容
+# 使用方式: 1.如果未初始化docker swarm，则执行docker swarm init, 然后执行 docker stack deploy webapi -c .\docker-compose.yml
 
 services:
   redis:
