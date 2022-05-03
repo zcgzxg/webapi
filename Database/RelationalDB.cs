@@ -1,6 +1,6 @@
 using System.Data.Common;
 
-namespace webapi.Base
+namespace webapi.Database
 {
     /// <summary>
     /// AppDB Class
@@ -35,9 +35,9 @@ namespace webapi.Base
     public static class RelationalDBExtensions
     {
         /// <summary>
-        /// 注册AppDB
+        /// 注册IRelationalDB
         /// </summary>
-        public static WebApplicationBuilder UseAppDB(this WebApplicationBuilder builder, string connStr)
+        public static WebApplicationBuilder UseRelationalDB(this WebApplicationBuilder builder, string connStr)
         {
             if (builder.Environment.IsDevelopment())
             {

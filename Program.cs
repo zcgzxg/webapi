@@ -1,6 +1,7 @@
-using webapi.Base;
+using webapi.Database;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.ResponseCompression;
+using webapi.Cache;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +15,9 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
     });
 
-builder.UseAppDB(builder.Configuration["ConnectionStrings:Mysql"]);
+builder.UseRelationalDB(builder.Configuration["ConnectionStrings:Mysql"]);
 builder.Services.AddRedis(builder.Configuration["ConnectionStrings:Redis"]);
+builder.Services.UseMemoryCache();
 
 builder.Services.AddResponseCompression(option =>
 {

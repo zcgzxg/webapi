@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Dapper.Contrib.Extensions;
 using Dapper;
 using webapi.Models;
+using webapi.Database;
 using webapi.Base;
 
 namespace webapi.Controllers;

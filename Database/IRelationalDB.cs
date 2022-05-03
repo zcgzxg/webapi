@@ -1,6 +1,6 @@
 using System.Data.Common;
 
-namespace webapi.Base
+namespace webapi.Database
 {
     /// <summary>
     /// the relation database
