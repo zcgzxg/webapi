@@ -18,6 +18,7 @@ builder.Services.AddControllers()
 builder.UseRelationalDB(builder.Configuration["ConnectionStrings:Mysql"]);
 builder.Services.AddRedis(builder.Configuration["ConnectionStrings:Redis"]);
 builder.UseMemoryCache();
+builder.UseDistributedCache();
 
 builder.Services.AddResponseCompression(option =>
 {
