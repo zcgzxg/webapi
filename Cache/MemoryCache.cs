@@ -1,25 +1,35 @@
+using Microsoft.Extensions.Caching.Memory;
+
 namespace webapi.Cache
 {
     /// <summary>
     /// MemoryCache
     /// </summary>
-    public class MemoryCache
+    public class MemoryCache : IDisposable
     {
         /// <summary>
         /// MemoryCache
         /// <see cref="MemoryCache"/>
         /// </summary>
-        public Microsoft.Extensions.Caching.Memory.IMemoryCache Cache;
+        public readonly IMemoryCache Cache;
 
         /// <summary>
         /// MemoryCache
         /// </summary>
-        public MemoryCache()
+        public MemoryCache(long sizeLimit)
         {
             Cache = new Microsoft.Extensions.Caching.Memory.MemoryCache(new Microsoft.Extensions.Caching.Memory.MemoryCacheOptions()
             {
-                SizeLimit = 1024 * 1024,
+                SizeLimit = sizeLimit,
             });
+        }
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            Cache.Dispose();
         }
     }
 
@@ -31,9 +41,12 @@ namespace webapi.Cache
         /// <summary>
         /// MemoryCache
         /// </summary>
-        public static void UseMemoryCache(this IServiceCollection services)
+        public static WebApplicationBuilder UseMemoryCache(this WebApplicationBuilder builder)
         {
-            services.AddSingleton<MemoryCache>();
+            builder.Services.AddSingleton<MemoryCache>(new MemoryCache(
+                long.Parse(builder.Configuration["Cache:MemoryCache:SizeLimit"])
+            ));
+            return builder;
         }
     }
 }
