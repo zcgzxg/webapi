@@ -30,41 +30,33 @@ public class CategoryController : ControllerBase
     [HttpGet]
     public async Task<CommonResponse<IEnumerable<CategoryResponse>>> GetCategories([FromServices] IRelationalDB db)
     {
-        try
-        {
-            var conn = db.Conn;
-            await conn.OpenAsync();
-            var sql = @"
+        var conn = db.Conn;
+        await conn.OpenAsync();
+        var sql = @"
                 SELECT c.*,
                     p.productid,
                     p.productname,
                     p.categoryid
                 FROM categories c
                     LEFT JOIN products p ON p.categoryid = c.categoryid";
-            var categories = await conn.QueryAsync<CategoryResponse, Product, CategoryResponse>(sql, (c, p) =>
-            {
-                if (p is not null)
-                {
-                    c.Products?.Add(p);
-                }
-                return c;
-            }, splitOn: "ProductId");
-
-            return new CommonResponse<IEnumerable<CategoryResponse>>(categories.GroupBy(c => c.CategoryId).Select(g =>
-            {
-                var c = g.First();
-                if (c.Products.Any())
-                {
-                    c.Products = g.Select(c => c.Products.Single()).ToList();
-                }
-                return c;
-            }));
-        }
-        catch (Exception e)
+        var categories = await conn.QueryAsync<CategoryResponse, Product, CategoryResponse>(sql, (c, p) =>
         {
-            _logger.LogTrace(exception: e, message: nameof(CategoryController));
-            return new CommonResponse<IEnumerable<CategoryResponse>>(Enumerable.Empty<CategoryResponse>(), ErrorCodes.Error, e.Message);
-        }
+            if (p is not null)
+            {
+                c.Products?.Add(p);
+            }
+            return c;
+        }, splitOn: "ProductId");
+
+        return new CommonResponse<IEnumerable<CategoryResponse>>(categories.GroupBy(c => c.CategoryId).Select(g =>
+        {
+            var c = g.First();
+            if (c.Products.Any())
+            {
+                c.Products = g.Select(c => c.Products.Single()).ToList();
+            }
+            return c;
+        }));
     }
     /// <summary>
     /// 编辑分类
@@ -72,27 +64,19 @@ public class CategoryController : ControllerBase
     [HttpPost]
     public async Task<CommonResponse<Category>> EditCategory([FromBody] Category cate, [FromServices] IRelationalDB db)
     {
-        try
+        var conn = db.Conn;
+        if (cate.CategoryId == 0)
         {
-            var conn = db.Conn;
-            if (cate.CategoryId == 0)
-            {
-                cate.CategoryId = (uint)(await conn.InsertAsync(cate));
-            }
-            else
-            {
-                if (!await conn.UpdateAsync(cate))
-                {
-                    return new CommonResponse<Category>(null, ErrorCodes.Error, "更新失败");
-                }
-            }
-            return new CommonResponse<Category>(cate);
+            cate.CategoryId = (uint)(await conn.InsertAsync(cate));
         }
-        catch (Exception e)
+        else
         {
-            _logger.LogTrace(exception: e, message: nameof(CategoryController) + " " + e.Message);
-            return new CommonResponse<Category>(null, ErrorCodes.Error, e.Message);
+            if (!await conn.UpdateAsync(cate))
+            {
+                return new CommonResponse<Category>(null, ErrorCodes.Error, "更新失败");
+            }
         }
+        return new CommonResponse<Category>(cate);
     }
 
     /// <summary>
@@ -101,24 +85,16 @@ public class CategoryController : ControllerBase
     [HttpDelete]
     public async Task<CommonResponse<bool>> DeleteCategory([FromQuery] uint categoryId, [FromServices] IRelationalDB db)
     {
-        try
+        var conn = db.Conn;
+        var cate = await conn.GetAsync<Category>(categoryId);
+        if (cate == null)
         {
-            var conn = db.Conn;
-            var cate = await conn.GetAsync<Category>(categoryId);
-            if (cate == null)
-            {
-                return new CommonResponse<bool>(false, ErrorCodes.Error, "分类不存在");
-            }
-            if (!await conn.DeleteAsync(cate))
-            {
-                return new CommonResponse<bool>(false, ErrorCodes.Error, "删除失败");
-            }
-            return new CommonResponse<bool>(true);
+            return new CommonResponse<bool>(false, ErrorCodes.Error, "分类不存在");
         }
-        catch (Exception e)
+        if (!await conn.DeleteAsync(cate))
         {
-            _logger.LogTrace(exception: e, message: nameof(CategoryController) + " " + e.Message);
-            return new CommonResponse<bool>(false, ErrorCodes.Error, e.Message);
+            return new CommonResponse<bool>(false, ErrorCodes.Error, "删除失败");
         }
+        return new CommonResponse<bool>(true);
     }
 }
