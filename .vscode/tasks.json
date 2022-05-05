@@ -14,18 +14,6 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "publish",
-                "${workspaceFolder}/webapi.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
             "label": "watch",
             "command": "dotnet",
             "type": "process",
@@ -36,6 +24,11 @@
                 "${workspaceFolder}/webapi.csproj"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "启动docker服务",
+            "type": "shell",
+            "command": "docker stack deploy webapi -c .\\docker-compose.yml"
         }
     ]
 }
