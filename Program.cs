@@ -1,7 +1,9 @@
-using webapi.Database;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.ResponseCompression;
 using webapi.Cache;
+using webapi.Models;
+using webapi.Database;
+using webapi.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,8 @@ builder.UseRelationalDB(builder.Configuration["ConnectionStrings:Mysql"]);
 builder.Services.AddRedis(builder.Configuration["ConnectionStrings:Redis"]);
 builder.UseMemoryCache();
 builder.UseDistributedCache();
+builder.UseUser();
+builder.UseJwtAuthentication();
 
 builder.Services.AddResponseCompression(option =>
 {
@@ -72,6 +76,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseUserWithJWTMiddleware();
 app.UseResponseCompression();
 app.MapControllers();
 

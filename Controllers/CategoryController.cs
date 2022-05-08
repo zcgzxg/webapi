@@ -28,8 +28,9 @@ public class CategoryController : ControllerBase
     /// 获取分类列表及其下的商品
     /// </summary>
     [HttpGet]
-    public async Task<CommonResponse<IEnumerable<CategoryResponse>>> GetCategories([FromServices] IRelationalDB db)
+    public async Task<CommonResponse<IEnumerable<CategoryResponse>>> GetCategories([FromServices] IRelationalDB db, [FromServices] User user)
     {
+        _logger.LogInformation(@"User: " + user.Name + user.ID);
         var conn = db.Conn;
         await conn.OpenAsync();
         var sql = @"
