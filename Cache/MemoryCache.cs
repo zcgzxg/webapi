@@ -29,6 +29,7 @@ namespace webapi.Cache
         /// </summary>
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
             Cache.Dispose();
         }
     }

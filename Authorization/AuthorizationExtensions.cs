@@ -12,9 +12,11 @@ namespace webapi.Authorization
         /// </summary>
         public static WebApplicationBuilder UseAuthorization(this WebApplicationBuilder builder)
         {
+            builder.Services.AddScoped<IAuthorizationHandler, AtLeastUserIDHandler>();
             builder.Services.AddAuthorization(options =>
             {
                 options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                options.AddPolicy("AtLeastUserId10", policy => policy.RequireClaim("User").AddRequirements(new AtLeastUserIDRequirement(10)));
             });
             return builder;
         }

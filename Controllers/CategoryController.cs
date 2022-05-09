@@ -28,11 +28,11 @@ public class CategoryController : ControllerBase
     /// <summary>
     /// 获取分类列表及其下的商品
     /// </summary>
-    [AllowAnonymous]
+    [Authorize(Policy = "AtLeastUserId10")]
+    // [AllowAnonymous]
     [HttpGet]
     public async Task<CommonResponse<IEnumerable<CategoryResponse>>> GetCategories([FromServices] IRelationalDB db, [FromServices] User user)
     {
-        _logger.LogInformation(@"User: " + user.Name + user.ID);
         var conn = db.Conn;
         await conn.OpenAsync();
         var sql = @"
@@ -90,14 +90,11 @@ public class CategoryController : ControllerBase
     {
         var conn = db.Conn;
         var cate = await conn.GetAsync<Category>(categoryId);
-        if (cate == null)
-        {
-            return new CommonResponse<bool>(false, ErrorCodes.Error, "分类不存在");
-        }
-        if (!await conn.DeleteAsync(cate))
-        {
-            return new CommonResponse<bool>(false, ErrorCodes.Error, "删除失败");
-        }
-        return new CommonResponse<bool>(true);
+
+        return cate == null
+            ? new CommonResponse<bool>(false, ErrorCodes.Error, "分类不存在")
+            : !await conn.DeleteAsync(cate)
+            ? new CommonResponse<bool>(false, ErrorCodes.Error, "删除失败")
+            : new CommonResponse<bool>(true);
     }
 }
