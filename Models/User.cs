@@ -13,6 +13,18 @@ namespace webapi.Models
         /// 用户名
         /// </summary>
         public string Name { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 从另一个User复制数据
+        /// </summary>
+        public void CopyFrom(User? user)
+        {
+            if (user is not null)
+            {
+                ID = user.ID;
+                Name = user.Name;
+            }
+        }
     }
 
 

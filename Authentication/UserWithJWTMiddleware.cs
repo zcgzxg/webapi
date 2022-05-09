@@ -55,12 +55,9 @@ namespace webapi.Authentication
             {
                 if (claim.Type == "User")
                 {
-                    var _user = System.Text.Json.JsonSerializer.Deserialize<User>(claim.Value);
-                    if (_user is not null)
-                    {
-                        user.ID = _user.ID;
-                        user.Name = _user.Name;
-                    }
+                    user.CopyFrom(
+                        System.Text.Json.JsonSerializer.Deserialize<User>(claim.Value)
+                    );
                 }
             }
             await _next(context);
