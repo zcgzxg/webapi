@@ -27,8 +27,6 @@ namespace webapi.Authentication
         /// </summary>
         public async Task InvokeAsync(HttpContext context, User user)
         {
-            user.ID = 1;
-            user.Name = "admin";
             context.Response.OnStarting(() =>
             {
                 if (user.ID > 0)
@@ -53,6 +51,18 @@ namespace webapi.Authentication
                 return Task.CompletedTask;
             });
 
+            foreach (var claim in context.User.Claims)
+            {
+                if (claim.Type == "User")
+                {
+                    var _user = System.Text.Json.JsonSerializer.Deserialize<User>(claim.Value);
+                    if (_user is not null)
+                    {
+                        user.ID = _user.ID;
+                        user.Name = _user.Name;
+                    }
+                }
+            }
             await _next(context);
         }
     }
