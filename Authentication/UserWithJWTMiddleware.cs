@@ -27,6 +27,8 @@ namespace webapi.Authentication
         /// </summary>
         public async Task InvokeAsync(HttpContext context, User user)
         {
+            user.ID = 1;
+            user.Name = "admin";
             context.Response.OnStarting(() =>
             {
                 if (user.ID > 0)
@@ -51,8 +53,6 @@ namespace webapi.Authentication
                 return Task.CompletedTask;
             });
 
-            user.ID = 1;
-            Console.WriteLine(context.User.Identity);
             await _next(context);
         }
     }

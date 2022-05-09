@@ -4,12 +4,14 @@ using Dapper;
 using webapi.Models;
 using webapi.Database;
 using webapi.Base;
+using Microsoft.AspNetCore.Authorization;
 
 namespace webapi.Controllers;
 
 /// <summary>
 /// Category Controller
 /// </summary>
+[Authorize]
 [ApiController]
 [Route("/api/[controller]")]
 public class CategoryController : ControllerBase
@@ -27,6 +29,7 @@ public class CategoryController : ControllerBase
     /// <summary>
     /// 获取分类列表及其下的商品
     /// </summary>
+    [AllowAnonymous]
     [HttpGet]
     public async Task<CommonResponse<IEnumerable<CategoryResponse>>> GetCategories([FromServices] IRelationalDB db, [FromServices] User user)
     {
