@@ -4,6 +4,7 @@ using webapi.Cache;
 using webapi.Models;
 using webapi.Database;
 using webapi.Authentication;
+using webapi.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,7 @@ builder.UseMemoryCache();
 builder.UseDistributedCache();
 builder.UseUser();
 builder.UseJwtAuthentication();
+builder.UseAuthorization();
 
 builder.Services.AddResponseCompression(option =>
 {

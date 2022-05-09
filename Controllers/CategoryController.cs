@@ -11,7 +11,6 @@ namespace webapi.Controllers;
 /// <summary>
 /// Category Controller
 /// </summary>
-[Authorize]
 [ApiController]
 [Route("/api/[controller]")]
 public class CategoryController : ControllerBase
