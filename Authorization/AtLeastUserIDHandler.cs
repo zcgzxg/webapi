@@ -29,7 +29,6 @@ namespace WebApi.Authorization
         /// <returns></returns>
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AtLeastUserIDRequirement requirement)
         {
-            Console.WriteLine("UserId: {0}", _token.Payload.User.ID);
             if (context.User.HasClaim(c => c.Type == JWTTokenConfig.ClaimType && _token.Payload.User.ID >= requirement.UserID))
             {
                 context.Succeed(requirement);

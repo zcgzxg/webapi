@@ -30,13 +30,10 @@ public class CategoryController : ControllerBase
     /// 获取分类列表及其下的商品
     /// </summary>
     [Authorize(Policy = "AtLeastUserId10")]
-    [AllowAnonymous]
+    // [AllowAnonymous]
     [HttpGet]
     public async Task<CommonResponse<IEnumerable<CategoryResponse>>> GetCategories([FromServices] IRelationalDB db, [FromServices] IToken token)
     {
-        token.NeedRefresh = true;
-        token.Payload.User.ID = 11;
-
         var conn = db.Conn;
         await conn.OpenAsync();
         var sql = @"

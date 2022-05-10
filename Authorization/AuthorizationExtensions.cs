@@ -18,7 +18,7 @@ namespace WebApi.Authorization
             builder.Services.AddAuthorization(options =>
             {
                 options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                options.AddPolicy("AtLeastUserId10", policy => policy.RequireClaim(JWTTokenConfig.ClaimType).AddRequirements(new AtLeastUserIDRequirement(12)));
+                options.AddPolicy("AtLeastUserId10", policy => policy.RequireClaim(JWTTokenConfig.ClaimType).AddRequirements(new AtLeastUserIDRequirement(10)));
             });
             return builder;
         }
