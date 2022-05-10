@@ -14,12 +14,6 @@ namespace WebApi.Models
     public interface IToken
     {
         /// <summary>
-        /// Claim Type
-        /// </summary>
-        /// <seealso cref="System.Security.Claims.Claim"/>
-        public string ClaimType { get; }
-
-        /// <summary>
         /// 指示是否需要根据Token对象重新生成JWT Token
         /// </summary>
         public bool NeedRefresh { get; set; }
@@ -35,7 +29,6 @@ namespace WebApi.Models
     {
         public bool NeedRefresh { get; set; } = false;
         public TokenPayload Payload { get; set; } = new TokenPayload();
-        public string ClaimType => "TokenPayload";
     }
 
     /// <summary>
@@ -50,5 +43,14 @@ namespace WebApi.Models
         {
             service.AddScoped<IToken, Token>();
         }
+    }
+
+    public static class JWTTokenConfig
+    {
+        /// <summary>
+        /// Claim Type
+        /// </summary>
+        /// <seealso cref="System.Security.Claims.Claim"/>
+        public static string ClaimType { get; } = "TokenPayload";
     }
 }

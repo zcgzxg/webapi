@@ -35,7 +35,7 @@ namespace WebApi.Authentication
                         new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                        new Claim(token.ClaimType, System.Text.Json.JsonSerializer.Serialize(token.Payload))
+                        new Claim(JWTTokenConfig.ClaimType, System.Text.Json.JsonSerializer.Serialize(token.Payload))
                     };
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -52,7 +52,7 @@ namespace WebApi.Authentication
             });
 
             TokenPayload? payload = null;
-            if (context.User.HasClaim(c => c.Type == token.ClaimType && ((payload = System.Text.Json.JsonSerializer.Deserialize<TokenPayload>(c.Value)) is not null)))
+            if (context.User.HasClaim(c => c.Type == JWTTokenConfig.ClaimType && ((payload = System.Text.Json.JsonSerializer.Deserialize<TokenPayload>(c.Value)) is not null)))
             {
                 token.Payload = payload!;
             }

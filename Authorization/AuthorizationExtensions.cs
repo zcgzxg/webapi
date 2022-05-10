@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 
+using WebApi.Models;
+
 namespace WebApi.Authorization
 {
     /// <summary>
@@ -12,10 +14,11 @@ namespace WebApi.Authorization
         /// </summary>
         public static WebApplicationBuilder UseAuthorization(this WebApplicationBuilder builder)
         {
+            builder.Services.AddScoped<IAuthorizationHandler, AtLeastUserIDHandler>();
             builder.Services.AddAuthorization(options =>
             {
                 options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                options.AddPolicy("AtLeastUserId10", policy => policy.RequireClaim("User").AddRequirements(new AtLeastUserIDRequirement(10)));
+                options.AddPolicy("AtLeastUserId10", policy => policy.RequireClaim(JWTTokenConfig.ClaimType).AddRequirements(new AtLeastUserIDRequirement(12)));
             });
             return builder;
         }
