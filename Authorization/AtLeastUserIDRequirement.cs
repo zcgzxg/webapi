@@ -28,7 +28,7 @@ namespace WebApi.Authorization
         /// </summary>
         public Task HandleAsync(AuthorizationHandlerContext context)
         {
-            if (context.User.HasClaim(c => c.Type == "User" && JsonSerializer.Deserialize<User>(c.Value)?.ID >= UserID))
+            if (context.User.HasClaim(c => c.Type == "User" && JsonSerializer.Deserialize<TokenPayload>(c.Value)?.User.ID >= UserID))
             {
                 context.Succeed(this);
             }

@@ -26,20 +26,4 @@ namespace WebApi.Models
             }
         }
     }
-
-
-    /// <summary>
-    /// 用户信息注入
-    /// </summary>
-    public static class UserExtensions
-    {
-        /// <summary>
-        /// 用户信息注入
-        /// </summary>
-        public static WebApplicationBuilder UseUser(this WebApplicationBuilder app)
-        {
-            app.Services.AddScoped<User>();
-            return app;
-        }
-    }
 }

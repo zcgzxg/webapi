@@ -19,12 +19,13 @@ builder.Services.AddControllers()
     });
 
 builder.UseRelationalDB(builder.Configuration["ConnectionStrings:Mysql"]);
-builder.Services.AddRedis(builder.Configuration["ConnectionStrings:Redis"]);
 builder.UseMemoryCache();
 builder.UseDistributedCache();
-builder.UseUser();
 builder.UseJwtAuthentication();
 builder.UseAuthorization();
+
+builder.Services.AddRedis(builder.Configuration["ConnectionStrings:Redis"]);
+builder.Services.AddToken();
 
 builder.Services.AddResponseCompression(option =>
 {
@@ -72,8 +73,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+app.UseJWTMiddleware();
 app.UseAuthorization();
-app.UseUserWithJWTMiddleware();
 app.UseResponseCompression();
 app.MapControllers();
 

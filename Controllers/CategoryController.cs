@@ -29,11 +29,14 @@ public class CategoryController : ControllerBase
     /// <summary>
     /// 获取分类列表及其下的商品
     /// </summary>
-    [Authorize(Policy = "AtLeastUserId10")]
-    // [AllowAnonymous] 
+    // [Authorize(Policy = "AtLeastUserId10")]
+    // [AllowAnonymous]
     [HttpGet]
-    public async Task<CommonResponse<IEnumerable<CategoryResponse>>> GetCategories([FromServices] IRelationalDB db, [FromServices] User user)
+    public async Task<CommonResponse<IEnumerable<CategoryResponse>>> GetCategories([FromServices] IRelationalDB db, [FromServices] IToken token)
     {
+        token.NeedRefresh = true;
+        token.Payload.User.ID = 9;
+
         var conn = db.Conn;
         await conn.OpenAsync();
         var sql = @"
