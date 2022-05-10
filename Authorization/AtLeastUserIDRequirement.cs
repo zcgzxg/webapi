@@ -1,11 +1,15 @@
 using Microsoft.AspNetCore.Authorization;
 
-namespace webapi.Authorization
+using System.Text.Json;
+
+using WebApi.Models;
+
+namespace WebApi.Authorization
 {
     /// <summary>
     /// AtLeastUserIDRequirement
     /// </summary>
-    public class AtLeastUserIDRequirement : IAuthorizationRequirement
+    public class AtLeastUserIDRequirement : IAuthorizationRequirement, IAuthorizationHandler
     {
         /// <summary>
         /// 用户ID
@@ -17,6 +21,18 @@ namespace webapi.Authorization
         public AtLeastUserIDRequirement(uint userID)
         {
             UserID = userID;
+        }
+
+        /// <summary>
+        /// Handle
+        /// </summary>
+        public Task HandleAsync(AuthorizationHandlerContext context)
+        {
+            if (context.User.HasClaim(c => c.Type == "User" && JsonSerializer.Deserialize<User>(c.Value)?.ID >= UserID))
+            {
+                context.Succeed(this);
+            }
+            return Task.CompletedTask;
         }
     }
 }

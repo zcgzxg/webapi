@@ -1,6 +1,6 @@
 using StackExchange.Redis;
 
-namespace webapi.Cache
+namespace WebApi.Cache
 {
     /// <summary>
     /// Redis分布式缓存扩展

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Caching.Memory;
 
-namespace webapi.Cache
+namespace WebApi.Cache
 {
     /// <summary>
     /// MemoryCache

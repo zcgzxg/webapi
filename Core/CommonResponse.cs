@@ -1,6 +1,6 @@
 
 
-namespace webapi.Base
+namespace WebApi.Base
 {
     /// <summary>
     /// 返回给前台的公共数据定义

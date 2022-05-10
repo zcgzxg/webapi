@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+
 using Dapper.Contrib.Extensions;
 
-namespace webapi.Models
+namespace WebApi.Models
 {
     /// <summary>
     /// Category Model

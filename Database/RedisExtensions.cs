@@ -1,6 +1,6 @@
 using StackExchange.Redis;
 
-namespace webapi.Database
+namespace WebApi.Database
 {
     /// <summary>
     /// Redis Extensions

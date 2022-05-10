@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 
-namespace webapi.Base
+namespace WebApi.Base
 {
     /// <summary>
     /// 返回给前端的错误代码

@@ -1,4 +1,4 @@
-namespace webapi.Models
+namespace WebApi.Models
 {
     /// <summary>
     /// CategoryResponse Model

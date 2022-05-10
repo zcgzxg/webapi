@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
 
-namespace webapi.Models
+namespace WebApi.Models
 {
 
     /// <summary>

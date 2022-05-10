@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 
 using System.Text;
 
-namespace webapi.Authentication
+namespace WebApi.Authentication
 {
     /// <summary>
     /// JWT认证扩展

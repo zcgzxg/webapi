@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Dapper.Contrib.Extensions;
 using Dapper;
-using webapi.Models;
-using webapi.Database;
-using webapi.Base;
+using WebApi.Models;
+using WebApi.Database;
+using WebApi.Base;
 using Microsoft.AspNetCore.Authorization;
 
-namespace webapi.Controllers;
+namespace WebApi.Controllers;
 
 /// <summary>
 /// Category Controller
@@ -15,6 +15,7 @@ namespace webapi.Controllers;
 [Route("/api/[controller]")]
 public class CategoryController : ControllerBase
 {
+#pragma warning disable IDE0052
     private readonly ILogger<CategoryController> _logger;
 
     /// <summary>
@@ -29,7 +30,7 @@ public class CategoryController : ControllerBase
     /// 获取分类列表及其下的商品
     /// </summary>
     [Authorize(Policy = "AtLeastUserId10")]
-    // [AllowAnonymous]
+    // [AllowAnonymous] 
     [HttpGet]
     public async Task<CommonResponse<IEnumerable<CategoryResponse>>> GetCategories([FromServices] IRelationalDB db, [FromServices] User user)
     {

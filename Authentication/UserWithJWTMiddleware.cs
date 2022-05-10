@@ -1,10 +1,10 @@
-using webapi.Models;
+using WebApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace webapi.Authentication
+namespace WebApi.Authentication
 {
     /// <summary>
     /// 从JWT中获取用户信息,将用户信息写入JWT中

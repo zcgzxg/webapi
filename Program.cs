@@ -1,10 +1,10 @@
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.ResponseCompression;
-using webapi.Cache;
-using webapi.Models;
-using webapi.Database;
-using webapi.Authentication;
-using webapi.Authorization;
+using WebApi.Cache;
+using WebApi.Models;
+using WebApi.Database;
+using WebApi.Authentication;
+using WebApi.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 

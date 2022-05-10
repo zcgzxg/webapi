@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 
-namespace webapi.Authorization
+namespace WebApi.Authorization
 {
     /// <summary>
     /// 权限验证扩展
@@ -12,7 +12,6 @@ namespace webapi.Authorization
         /// </summary>
         public static WebApplicationBuilder UseAuthorization(this WebApplicationBuilder builder)
         {
-            builder.Services.AddScoped<IAuthorizationHandler, AtLeastUserIDHandler>();
             builder.Services.AddAuthorization(options =>
             {
                 options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();

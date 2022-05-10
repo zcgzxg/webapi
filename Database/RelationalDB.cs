@@ -1,6 +1,6 @@
 using System.Data.Common;
 
-namespace webapi.Database
+namespace WebApi.Database
 {
     /// <summary>
     /// AppDB Class
