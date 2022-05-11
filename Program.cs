@@ -16,6 +16,7 @@ builder.Services.AddControllers()
     {
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
         options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+        options.SerializerSettings.Formatting = builder.Environment.IsDevelopment() ? Newtonsoft.Json.Formatting.Indented : Newtonsoft.Json.Formatting.None;
     });
 
 builder.UseRelationalDB(builder.Configuration["ConnectionStrings:Mysql"]);
