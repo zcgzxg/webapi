@@ -12,10 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Services.AddControllers()
-    .AddJsonOptions(options =>
+    .AddNewtonsoftJson(options =>
     {
-        options.JsonSerializerOptions.PropertyNamingPolicy = null;
-        options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+        options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
     });
 
 builder.UseRelationalDB(builder.Configuration["ConnectionStrings:Mysql"]);
@@ -61,6 +61,7 @@ builder.Services.AddSwaggerGen(options =>
     var xmlFilename = $"{builder.Environment.ApplicationName}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
+builder.Services.AddSwaggerGenNewtonsoftSupport();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
