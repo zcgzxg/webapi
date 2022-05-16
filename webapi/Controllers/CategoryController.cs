@@ -19,7 +19,7 @@ public class CategoryController : ControllerBase
     private readonly ILogger<CategoryController> _logger;
 
     /// <summary>
-    /// Test Controller
+    /// Category Controller
     /// </summary>
     public CategoryController(ILogger<CategoryController> logger)
     {
@@ -31,6 +31,7 @@ public class CategoryController : ControllerBase
     /// </summary>
     [AllowAnonymous]
     [HttpGet]
+#pragma warning disable IDE0060
     public async Task<CommonResponse<IEnumerable<CategoryResponse>>> GetCategories([FromServices] IRelationalDB db, [FromServices] IToken token)
     {
         var conn = db.Conn;

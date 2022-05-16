@@ -5,7 +5,7 @@ namespace WebApi.Database
     /// <summary>
     /// AppDB Class
     /// </summary>
-    class RelationalDB : IRelationalDB
+    public class RelationalDB : IRelationalDB
     {
         /// <summary>
         /// 数据库连接
