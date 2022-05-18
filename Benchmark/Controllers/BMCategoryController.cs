@@ -11,11 +11,13 @@ namespace WebApi.Benchmark.Controllers
     [ThreadingDiagnoser]
     [MemoryDiagnoser]
     [EventPipeProfiler(BenchmarkDotNet.Diagnosers.EventPipeProfile.GcCollect | BenchmarkDotNet.Diagnosers.EventPipeProfile.CpuSampling)]
-    [IterationTime(120)]
-    [IterationCount(10)]
-    [InvocationCount(2)]
+    // [IterationTime(240)]
+    // [IterationCount(10)]
+    // [InvocationCount(2)]
     public class BMCategoryController
     {
+        private static readonly string CONN_STR =
+            "server=nil.fit; uid=test; pwd=/Ce55edoR6@nlb>B6Qw9; database=test; UseUsageAdvisor=true; CacheServerProperties=true; logging=true; MaximumPoolsize=200;";
         private readonly ILogger<CategoryController> _logger;
 
         public BMCategoryController()
@@ -49,12 +51,11 @@ namespace WebApi.Benchmark.Controllers
 
         public async Task BenchGetCategory(int parallelCount)
         {
-            var tasks = new Task<WebApi.Base.CommonResponse<IEnumerable<CategoryResponse>>>[parallelCount];
-            const string connStr = "server=nil.fit; uid=test; pwd=/Ce55edoR6@nlb>B6Qw9; database=test; UseUsageAdvisor=true; CacheServerProperties=true; logging=true; MaximumPoolsize=200;";
+            var tasks = new Task<Base.CommonResponse<IEnumerable<CategoryResponse>>>[parallelCount];
             for (var i = 0; i < parallelCount; i++)
             {
                 var controller = new CategoryController(_logger);
-                tasks[i] = controller.GetCategories(new RelationalDB(connStr), new Token());
+                tasks[i] = controller.GetCategories(new RelationalDB(CONN_STR), new Token());
             }
 
             await Task.WhenAll(tasks);
